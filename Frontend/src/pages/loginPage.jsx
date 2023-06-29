@@ -23,15 +23,9 @@ const clientId = "676561310102-n0re7t10lpgc4ngd74t7umi9i6l2kujk.apps.googleuserc
 function LoginPage() {
 
     useEffect(() => {
-        function start() {
-            gapi.client.init({
-                clientId: { clientId },
-                scope: "",
-
-            })
-
-            gapi.load('client:auth2', start)
-        }
+        gapi.load('auth2', function(){
+            gapi.auth2.init()
+        })
     }, [])
 
 
@@ -52,8 +46,9 @@ function LoginPage() {
                 <p>Not a member? <a href="#!">Register</a></p>
                 <p>or sign up with:</p>
                 <MDBBtn tag='a' color='none' className='m-1' style={{ color: '#1266f1' }}>
-                    <LoginGoogleButton clientId={clientId} />
+                   
                 </MDBBtn>
+                 <LoginGoogleButton />
             </div>
 
         </MDBContainer>

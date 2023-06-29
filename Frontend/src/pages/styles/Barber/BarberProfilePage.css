@@ -1,0 +1,37 @@
+  .card {
+      background-color: #c5c5c5;
+      color: #C0C0C0;
+      border-radius: 10px;
+      margin: 0 1% 2% 1%;
+      padding: 1%;
+      flex-direction: row;
+  }
+
+
+  #profileImage {
+      border-radius: 10px;
+      height: 100%;
+      width: 100%;
+  }
+
+  @media (max-width:768px) {
+    #profileImage {
+        border-radius: 10px;
+        height: 100%;
+    }
+  }
+
+
+  .card-title {
+      color: #000000;
+      font-size: 20px;
+  }
+
+  .card-text {
+      color: #000000;
+      font-size: large;
+  }
+
+  ul {
+      color: #000000;
+  }
