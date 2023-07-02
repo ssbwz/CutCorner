@@ -42,7 +42,7 @@ function NavBar() {
                 
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     {nav_links.map((linkItem) => (
-                        <li className="nav-item">
+                        <li className="nav-item" key={linkItem.link}>
                             <NavLink className="nav-link" to={linkItem.link}>{linkItem.title}</NavLink>
                         </li>
                     ))}
