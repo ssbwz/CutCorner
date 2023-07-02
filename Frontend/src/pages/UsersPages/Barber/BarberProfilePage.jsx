@@ -3,29 +3,34 @@ import { React, useState } from 'react';
 // style
 import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText }
     from 'mdb-react-ui-kit';
-import '../../styles/Barber/BarberProfilePage.css'
+import '../../styles/Barber/BarberProfile.css'
 
 // servers
 import usersServer from '../../../servers/usersServer'
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const BarberProfilePage = () => {
 
     const [barber, setBarber] = useState()
-    let location = useLocation();
+    const [isFounded, setIsFounded] = useState(true)
+
+    const location = useLocation();
+    const navigator = useNavigate();
 
     useEffect(() => {
         if (location.pathname === '/me') {
-
             usersServer.getCurrentProfile()
                 .then((res) => {
                     setBarber(res.data)
                 })
                 .catch((error) => {
-                    console.log(error)
-                    if (error) {
-                        return ("Not found")
+                    if(error.code === 'ERR_NETWORK' || error.code === 'ERR_CONNECTION_REFUSED'){
+                        navigator("/exception", {state:{exceptionType: "serviceDown"}} )
+                        return
+                    }
+                    if (error && error.response.status === 404) {
+                        setIsFounded(false)
                     }
                 })
         } else if(location.pathname.slice(0,15) === '/users/barbers/'){
@@ -33,12 +38,14 @@ const BarberProfilePage = () => {
             usersServer.getUserByUsername(searchedUsername)
                 .then((res) => {
                     setBarber(res.data)
-                    console.log(res)
                 })
                 .catch((error) => {
-                    console.log(error)
-                    if (error) {
-                        return ("Not found")
+                    if(error.code === 'ERR_NETWORK' || error.code === 'ERR_CONNECTION_REFUSED'){
+                        navigator("/exception", {state:{exceptionType: "serviceDown"}} )
+                        return
+                    }
+                    if (error && error.response.status === 404) {
+                        setIsFounded(false)                       
                     }
                 })
 
@@ -110,6 +117,9 @@ const BarberProfilePage = () => {
                 </MDBRow>
             </MDBContainer>
         );
+    }
+    else if (!isFounded){
+        return (<>Not found</>)
     }
     else {
         return <>Loading...</>
