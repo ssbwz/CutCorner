@@ -11,6 +11,8 @@ import LoginPage from './pages/loginPage';
 import Navbar from './components/navigation/Navbar';
 import ProfilePage from './pages/UsersPages/Barber/BarberProfilePage'
 import UserPage from './pages/UsersPages/UserPage'
+import BarbersPage from './pages/UsersPages/BarbersPages/BarbersPage'
+import ExceptionPage from './pages/ExceptionPage';
 
 function App() {
   return (
@@ -22,8 +24,10 @@ function App() {
           <Route path={"/me"} element={<UserPage />} />
           <Route path={"/login"} element={<LoginPage />} />
           <Route path={"/users"} >
+            <Route path={"barbers"} element={<BarbersPage />} />
             <Route path={"barbers/:username"} element={<ProfilePage />} />
           </Route>
+          <Route path={"/exception"} element={<ExceptionPage />} />
         </Routes>
       </Router>
     </div>

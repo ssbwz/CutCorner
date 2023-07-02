@@ -131,3 +131,19 @@ exports.getUserById = (id) => {
 exports.getUsers = () => {
   return users;
 }
+
+
+exports.getbarbers = (pageNumber) => {
+  const barbers = []
+  for (let index = 0; index < users.length; index++) {
+    if (users[index] instanceof  Barber) {
+      barbers.push(users[index]);
+    }
+  }
+  return paginate(barbers,5,pageNumber);
+}
+
+
+function paginate(array, page_size, page_number) {
+  return array.slice((page_number - 1) * page_size, page_number * page_size);
+}

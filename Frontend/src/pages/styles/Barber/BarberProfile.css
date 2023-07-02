@@ -21,6 +21,13 @@
     }
   }
 
+  #shortprofileImage{
+    border-radius: 10px;
+    margin-top:  15% ;
+    height: 80%;
+    width: 100%;
+  }
+
 
   .card-title {
       color: #000000;
