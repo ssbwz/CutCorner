@@ -11,24 +11,12 @@ function NavBar() {
         link: '/users/barbers'
     }]
 
-    return <>    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    return <>   
+     <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
-
-            <NavLink
-                className="navbar-toggler"
-                type="button"
-                data-mdb-toggle="collapse"
-                data-mdb-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-                <i className="fas fa-bars"></i>
-            </NavLink>
-
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <NavLink className="navbar-brand mt-2 mt-lg-0" to='/'>
+                <NavLink className="navbar-brand mt-2 mt-lg-0 home-title" to='/'>
                    {/*
                    TODO: Add image of the logo
                     <img

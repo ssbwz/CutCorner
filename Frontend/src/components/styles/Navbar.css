@@ -1,3 +1,25 @@
-.nav-link{
- cursor: pointer;
+.navbar {
+    margin: 1% 5% 1%;
+    padding: 0.5% 1% 0.5% 1%;
+    border-radius: 10px;
+    background: #008BE0;
+    color: #FFF;
+}
+
+.home-title {
+    color: #FFF;
+    font-size: 22px;
+    font-family: Kantumruy;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.nav-link {
+    font-size: 18px;
+    font-family: Kantumruy;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    color: #FFF;
 }
