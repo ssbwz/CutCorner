@@ -13,6 +13,7 @@ import ProfilePage from './pages/UsersPages/Barber/BarberProfilePage'
 import UserPage from './pages/UsersPages/UserPage'
 import BarbersPage from './pages/UsersPages/BarbersPages/BarbersPage'
 import ExceptionPage from './pages/ExceptionPage';
+import Footer from './components/navigation/Footer';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           </Route>
           <Route path={"/exception"} element={<ExceptionPage />} />
         </Routes>
+        <Footer />
       </Router>
     </div>
   );
