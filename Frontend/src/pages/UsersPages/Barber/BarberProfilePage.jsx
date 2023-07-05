@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 
 // style
-import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText }
+import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBBtn }
     from 'mdb-react-ui-kit';
 import '../../styles/Barber/BarberProfile.css'
 
@@ -9,6 +9,11 @@ import '../../styles/Barber/BarberProfile.css'
 import usersServer from '../../../servers/usersServer'
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import TextHolder from '../../../components/General/TextHolder';
+import Loading from '../../../components/General/Loading';
+import ActionButton from '../../../components/General/ActionButton';
+
+import NotFoundPage from '../../NotFoundPage'
 
 const BarberProfilePage = () => {
 
@@ -25,104 +30,139 @@ const BarberProfilePage = () => {
                     setBarber(res.data)
                 })
                 .catch((error) => {
-                    if(error.code === 'ERR_NETWORK' || error.code === 'ERR_CONNECTION_REFUSED'){
-                        navigator("/exception", {state:{exceptionType: "serviceDown"}} )
+                    if (error.code === 'ERR_NETWORK' || error.code === 'ERR_CONNECTION_REFUSED') {
+                        navigator("/exception", { state: { exceptionType: "serviceDown" } })
                         return
                     }
                     if (error && error.response.status === 404) {
                         setIsFounded(false)
                     }
                 })
-        } else if(location.pathname.slice(0,15) === '/users/barbers/'){
-            const searchedUsername = location.pathname.slice(15)     
+        } else if (location.pathname.slice(0, 15) === '/users/barbers/') {
+            const searchedUsername = location.pathname.slice(15)
             usersServer.getUserByUsername(searchedUsername)
                 .then((res) => {
                     setBarber(res.data)
                 })
                 .catch((error) => {
-                    if(error.code === 'ERR_NETWORK' || error.code === 'ERR_CONNECTION_REFUSED'){
-                        navigator("/exception", {state:{exceptionType: "serviceDown"}} )
+                    if (error.code === 'ERR_NETWORK' || error.code === 'ERR_CONNECTION_REFUSED') {
+                        navigator("/exception", { state: { exceptionType: "serviceDown" } })
                         return
                     }
                     if (error && error.response.status === 404) {
-                        setIsFounded(false)                       
+                        setIsFounded(false)
                     }
                 })
 
         }
-        
+
 
     }, [location])
 
 
+    function navigate(e, username) {
+        e.preventDefault();
+        navigator("/appointment/" + username);
+    }
+
     if (barber) {
+
+        const availabilities = () => {
+            const elements = [];
+
+            for (let availability = 0; availability < barber.availabilities.length; availability++) {
+                if (barber.availabilities[availability].startTime) {
+                    elements.push(<>
+                        <MDBCol className='availability-element' key={barber.availabilities[availability]} lg="6" md="6" xs='12'>
+                            {barber.availabilities[availability].day} : {barber.availabilities[availability].startTime} - {barber.availabilities[availability].endTime}
+                        </MDBCol>
+                    </>
+
+                    );
+                } else {
+                    elements.push(
+                        <MDBCol className='availability-element' key={barber.availabilities[availability]} lg="6" md="6" xs='12'>
+                            {barber.availabilities[availability].day} : Not available
+                        </MDBCol>
+                    );
+                }
+            }
+            return <>{elements}</>;
+        };
+
+
         return (
             <MDBContainer>
-                <h1 className="mt-4">Barber Profile</h1>
+
+                <div className='fakeSpace'></div>
+
                 <MDBRow>
                     <MDBCol md="12">
-                        <MDBRow>
-                            <MDBCard >
-                                <MDBContainer>
-                                    <MDBRow>
-                                        <MDBCol lg="2" md="2" sm='4'>
-                                            <img id="profileImage" src={barber.profilePicture} className='img-fluid rounded' alt='' />
-                                        </MDBCol>
-                                        <MDBCol lg="10" md="10" xs={12}>
-                                            <MDBCardBody>
-                                                <MDBCardTitle>{barber.firstName} {barber.midname} {barber.lastName}</MDBCardTitle>
-                                                <MDBCardText>username: {barber.username}</MDBCardText>
-                                                <MDBCardText>Address: {barber.address}</MDBCardText>
-                                                <MDBCardText>Gender: {barber.gender}</MDBCardText>
-                                            </MDBCardBody>
-                                        </MDBCol>
-                                    </MDBRow>
-                                </MDBContainer>
-                            </MDBCard>
-                        </MDBRow>
+                        <MDBCard id='info'>
+                            <MDBCardTitle className='hero-username'>{barber.username}</MDBCardTitle>
+                            <div className='d-inline-flex'>
 
-                    </MDBCol>
-                    <MDBCol md="12">
-                        <MDBCard>
-                            <MDBCardBody>
-                                <MDBCardTitle>About Me</MDBCardTitle>
-                                <MDBCardText>{barber.bio}</MDBCardText>
-                                <MDBCardTitle>Services</MDBCardTitle>
-                                <MDBCardText>
-                                    {barber.services.map((service) => (
-                                        <>{service + " "}</>
-                                    ))}
-                                </MDBCardText>
-                                <MDBCardTitle>Availability</MDBCardTitle>
-                                <ul>
-                                    {barber.availability.map((availability) => {
-                                        if (availability.startTime) {
-                                         return   (
-                                                <li key={availability}>
-                                                    {availability.day} : {availability.startTime} - {availability.endTime}
-                                                </li>
-                                            )
-                                        }
-                                        return   (
-                                            <li key={availability}>
-                                                {availability.day} : {"Closed"}
-                                            </li>
-                                        )
-                                    })}
-                                </ul>
-                                <MDBCardText>Current Location: {barber.workAddress}</MDBCardText>
-                            </MDBCardBody>
+                                <MDBCol lg="2" md="2" sm='4'>
+                                    <img id="profileImage" src={barber.profilePicture} className='img-fluid' alt='Barber image' />
+                                </MDBCol>
+
+                                <MDBCol lg="10" md="10" xs='12'>
+                                    <MDBCardBody>
+                                        <MDBCardText>Name: {barber.firstname} {barber.midname} {barber.lastname}</MDBCardText>
+                                        <MDBCardText>Address: {barber.workAddress.city}, {barber.workAddress.street}, {barber.workAddress.postcode} </MDBCardText>
+                                        <MDBCardText>Gender: {barber.gender}</MDBCardText>
+                                        <ActionButton onClick={e => navigate(e, barber.username)} title={'Book an appointment'}></ActionButton>
+                                    </MDBCardBody>
+                                </MDBCol>
+
+                            </div>
                         </MDBCard>
                     </MDBCol>
                 </MDBRow>
-            </MDBContainer>
+
+                <MDBRow>
+                    <MDBCol>
+                        <TextHolder title={"About me"}>
+                            <MDBCardText>{barber.bio}</MDBCardText>
+                        </TextHolder>
+                    </MDBCol>
+                </MDBRow>
+
+                <MDBRow>
+                    <MDBCol>
+                        <TextHolder title={"Services"}>
+                            <MDBCardText>
+                                {barber.services.map((service) => (
+                                    <div className="services-element" >{service.title} {service.price}{service.currencySign}</div>
+                                ))}
+                            </MDBCardText>
+                        </TextHolder>
+                    </MDBCol>
+                </MDBRow>
+
+                <MDBRow >
+                    <MDBCol>
+                        <TextHolder title={"Availability"}>
+                            <MDBRow>
+                                {availabilities()}
+                            </MDBRow>
+                        </TextHolder>
+                    </MDBCol >
+                </MDBRow >
+
+            </MDBContainer >
         );
+
     }
-    else if (!isFounded){
-        return (<>Not found</>)
+    else if (!isFounded) {
+        return (<NotFoundPage />)
     }
     else {
-        return <>Loading...</>
+        return <>
+            <div className="text-center">
+                <Loading />
+            </div>
+        </>
     }
 };
 

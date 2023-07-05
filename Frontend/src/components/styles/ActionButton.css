@@ -1,0 +1,9 @@
+.action-button{
+    background: #3B56E2;
+}
+
+@media screen and (max-width: 426px) {
+    .action-button{
+        width: -webkit-fill-available;
+    }
+}

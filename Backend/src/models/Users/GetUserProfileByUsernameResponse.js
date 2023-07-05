@@ -1,5 +1,5 @@
 module.exports = class GetUserProfileByUsernameResponse{
-    constructor({firstname, midname, lastname, username, address, gender, profilePicture, workAddress,bio, services, availability}) {
+    constructor({firstname, midname, lastname, username, address, gender, profilePicture, workAddress,bio, services, availabilities}) {
       this.firstname = firstname;
       this.midname = midname;
       this.lastname = lastname;
@@ -11,7 +11,7 @@ module.exports = class GetUserProfileByUsernameResponse{
       this.workAddress = workAddress;
       this.bio = bio;
       this.services = services;
-      this.availability = availability;
+      this.availabilities = availabilities;
     }
   }
 

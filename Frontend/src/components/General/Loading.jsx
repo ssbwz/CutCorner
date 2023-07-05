@@ -5,7 +5,7 @@ import '../styles/Loading.css'
 function Loading(){
 
     return<>
-    <div style={{height: '100vh'}} className=''>
+    <div style={{height: '100vh'}}>
     <MDBSpinner className='spinner' role='status'>
       <span className='visually-hidden'>Loading...</span>
     </MDBSpinner>

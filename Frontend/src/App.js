@@ -14,6 +14,7 @@ import UserPage from './pages/UsersPages/UserPage'
 import BarbersPage from './pages/UsersPages/BarbersPages/BarbersPage'
 import ExceptionPage from './pages/ExceptionPage';
 import Footer from './components/navigation/Footer';
+import NotFound from './pages/NotFoundPage';
 
 function App() {
   return (
@@ -29,7 +30,9 @@ function App() {
             <Route path={"barbers/:username"} element={<ProfilePage />} />
           </Route>
           <Route path={"/exception"} element={<ExceptionPage />} />
+          <Route path={"/404"} element={<NotFound />} />
         </Routes>
+       
         <Footer />
       </Router>
     </div>

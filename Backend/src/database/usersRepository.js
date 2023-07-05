@@ -14,7 +14,11 @@ const users = [
     'https://cdn.vectorstock.com/i/preview-1x/53/48/trendy-barber-man-vector-35975348.jpg',
     new Date('2022-01-01'),
     new Date('2022-05-13'),
-    '456 Market St',
+    {
+      city: 'Amsterdam',
+      street: '456 Market St',
+      postcode: '4636 KR'
+    },
     'I have been cutting hair for 10 years and specialize in fades and beard trims.',
     ['Haircut', 'Beard Trim', 'Shave'],
     [
@@ -69,9 +73,25 @@ const users = [
     'https://cdn.vectorstock.com/i/preview-1x/53/48/trendy-barber-man-vector-35975348.jpg',
     new Date('2021-06-01'),
     new Date('2021-12-31'),
-    '789 Elm St',
+    {
+      city: 'Sittard',
+      street: '789 Elm St',
+      postcode: '4422 AA'
+    },
     'I am a licensed cosmetologist with 5 years of experience. I specialize in hair color and styling.',
-    ['Haircut', 'Color', 'Styling'],
+    [{
+      title: 'Haircut',
+      price: 10.6,
+      currencySign: '€'
+    }, {
+      title: 'Color',
+      price: 1.6,
+      currencySign: '€'
+    }, {
+      title: 'Styling',
+      price: 150.1,
+      currencySign: '€'
+    }],
     [{
       day: "Monday",
       startTime: '9:00am',
@@ -99,13 +119,9 @@ const users = [
     },
     {
       day: "Saturday",
-      startTime: undefined,
-      endTime: undefined
     },
     {
-      day: "Sunday",
-      startTime: undefined,
-      endTime: undefined
+      day: "Sunday"
     }
     ]
   )]

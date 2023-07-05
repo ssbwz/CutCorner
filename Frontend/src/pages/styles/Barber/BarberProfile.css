@@ -1,44 +1,76 @@
-  .card {
-      background-color: #c5c5c5;
-      color: #C0C0C0;
-      border-radius: 10px;
-      margin: 0 1% 2% 1%;
-      padding: 1%;
-      flex-direction: row;
+  #profileImage {
+      clip-path: ellipse(98px 98px);
+      height: 100%;
   }
 
+  @media (max-width: 426px) {
+      .fakeSpace {
+          height: 26vh;
+      }
 
-  #profileImage {
+      #profileImage {
+          position: absolute;
+          bottom: 25vh;
+          left: 4.5vh;
+          clip-path: ellipse(105px 140px);
+      }
+  }
+
+  @media (max-width: 376px) {
+      .fakeSpace {
+          height: 26vh;
+      }
+
+      #profileImage {
+          position: absolute;
+          bottom: 25vh;
+          left: 3vh;
+          clip-path: ellipse(105px 140px);
+      }
+  }
+
+  @media (max-width: 320px) {
+      .fakeSpace {
+          height: 26vh;
+      }
+
+      #profileImage {
+          position: absolute;
+          bottom: 25vh;
+          left: .4vh;
+          clip-path: ellipse(105px 140px);
+      }
+  }
+
+  #shortprofileImage {
       border-radius: 10px;
-      height: 100%;
+      margin-top: 15%;
+      height: 80%;
       width: 100%;
   }
 
-  @media (max-width:768px) {
-    #profileImage {
-        border-radius: 10px;
-        height: 100%;
-    }
-  }
 
-  #shortprofileImage{
-    border-radius: 10px;
-    margin-top:  15% ;
-    height: 80%;
-    width: 100%;
-  }
-
-
-  .card-title {
-      color: #000000;
+  .availability-element {
+      color: var(--text, #000);
       font-size: 20px;
+      font-family: Inter;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 30px;
   }
 
-  .card-text {
-      color: #000000;
-      font-size: large;
+  .services-element {
+      display: inline-flex !important;
+      min-width: fit-content;
+      padding-right: 10px;
   }
 
-  ul {
-      color: #000000;
+  .hero-username {
+      text-align: center;
+      color: var(--box-title, #232323);
+      font-size: 40px;
+      font-family: Noto Sans Javanese;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
   }
