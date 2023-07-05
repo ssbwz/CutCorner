@@ -20,7 +20,19 @@ const users = [
       postcode: '4636 KR'
     },
     'I have been cutting hair for 10 years and specialize in fades and beard trims.',
-    ['Haircut', 'Beard Trim', 'Shave'],
+    [{
+      title: 'Haircut',
+      price: 5.6,
+      currencySign: '€'
+    }, {
+      title: 'Color',
+      price: 10.6,
+      currencySign: '€'
+    }, {
+      title: 'Styling',
+      price: 10.1,
+      currencySign: '€'
+    }],
     [
       {
         day: "Monday",

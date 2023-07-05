@@ -1,0 +1,25 @@
+.shortprofileImage {
+    border-radius: 10px;
+    margin-top: 15%;
+    height: 80%;
+    width: 100%;
+}
+
+.section-title {
+    color: var(--box-title, #232323);
+    font-size: 30px;
+    font-family: Kantumruy;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.hero-username {
+    text-align: center;
+    color: var(--box-title, #232323);
+    font-size: 40px;
+    font-family: Noto Sans Javanese;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}

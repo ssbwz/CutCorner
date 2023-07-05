@@ -3,19 +3,20 @@ import { MDBContainer as Container, MDBRow as Row, MDBCol as Col }
    from 'mdb-react-ui-kit';
 import { useState, useEffect } from 'react';
 import usersServer from '../../../servers/usersServer';
-import '../../styles/Barber/BarberProfile.css'
+import '../../styles/Barber/BarbersPage.css'
 import NavigateButton from '../../../components/navigation/NavigateButton';
 
+import NotFoundPage from '../../NotFoundPage'
+import Loading from '../../../components/General/Loading';
 
 function BarbersPage() {
    const [barbers, setBarbers] = useState()
-   const [isFounded, setIsFounded] = useState()
+   const [isFounded, setIsFounded] = useState(true)
 
    useEffect(() => {
       usersServer.getBarbers(1)
          .then((res) => {
             setBarbers(res.data)
-
          })
          .catch((error) => {
             if (error.code === 'ERR_NETWORK' || error.code === 'ERR_CONNECTION_REFUSED') {
@@ -31,69 +32,60 @@ function BarbersPage() {
    const GenerateServicesText = (services) => {
       let servicesText = ''
       for (let index = 0; index < services.length; index++) {
-         servicesText += services[index] + ',';
+         servicesText += ` ${services[index].title} ${services[index].price}${services[index].currencySign}` + ',';
       }
       return servicesText.slice(0, servicesText.length - 1)
-   }
-
-   const GenerateAvailabilitiesText = (availabilities) => {
-      let availabilitiesText = ''
-      for (let index = 0; index < availabilities.length; index++) {
-         if (availabilities[index].startTime === undefined) {
-            availabilitiesText += `${availabilities[index].day} : Closed, `;
-         } else {
-            availabilitiesText += `${availabilities[index].day} : ${availabilities[index].startTime} - ${availabilities[index].endTime}, `;
-         }
-      }
-      return availabilitiesText.slice(0, availabilitiesText.length - 2)
    }
 
 
    if (barbers) {
       return <>
-         {barbers.map((barber) =>
-         (
-            <Col md="12" key={barber.username}>
-               <Row>
-                  <Card >
-                     <Container>
+         <Container>
+            <Row>
+               {barbers.map((barber) =>
+               (
+                  <>
+                     <Col md="6" key={barber.username}>
+                        <Card >
                         <Row>
-                           <Col lg="2" md="2" sm='4'>
-                              <img id="shortprofileImage" src={barber.profilePicture} className='img-fluid' alt='Barber image' />
+                           <Col lg="4" md="2" sm='4'>
+                              <img src={barber.profilePicture} className='img-fluid shortprofileImage' alt='Barber image' />
                            </Col>
-                           <Col lg="10" md="10" xs={12}>
+
+                           <Col lg="8" md="10" xs={12}>
                               <CardBody>
-                                 <CardTitle>Username: {barber.username}</CardTitle>
+
+                                 <CardTitle className='hero-username'>{barber.username}</CardTitle>
                                  <CardText>Name: {barber.firstname} {barber.midname} {barber.lastname}</CardText>
 
-                                 <CardTitle>Services</CardTitle>
+                                 <CardTitle className='section-title'>Services</CardTitle>
                                  <CardText>
                                     {GenerateServicesText(barber.services)}
                                  </CardText>
 
-                                 <CardTitle>
-                                    Availabilities
-                                 </CardTitle>
-                                 <CardText>
-                                    {GenerateAvailabilitiesText(barber.availability)}
-                                 </CardText>
                                  <NavigateButton link={`/users/barbers/${barber.username}`} title={'Profile'} />
+
                               </CardBody>
                            </Col>
-                        </Row>
-                     </Container>
-                  </Card>
-               </Row>
-            </Col>
-         )
-         )}
+                           </Row>
+                        </Card>
+                     </Col>
+                  </>
+               )
+               )}
+            </Row>
+         </Container >
       </>
    }
    else if (!isFounded) {
-      return (<>Not found</>)
+      return (<NotFoundPage />)
    }
    else {
-      return <>Loading...</>
+      return <>
+         <div className="text-center">
+            <Loading />
+         </div>
+      </>
    }
 
 }

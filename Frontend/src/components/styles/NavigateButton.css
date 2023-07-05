@@ -1,0 +1,9 @@
+.navigate-button{
+    background: #3B56E2;
+}
+
+@media screen and (max-width: 426px) {
+    .navigate-button{
+        width: -webkit-fill-available;
+    }
+}
