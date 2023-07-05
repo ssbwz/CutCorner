@@ -93,17 +93,16 @@ const BarberProfilePage = () => {
 
         return (
             <MDBContainer>
-
-                <div className='fakeSpace'></div>
-
                 <MDBRow>
+
+                    <img id="profileImagePhone" src={barber.profilePicture} className='img-fluid' alt='Barber image' />
                     <MDBCol md="12">
                         <MDBCard id='info'>
                             <MDBCardTitle className='hero-username'>{barber.username}</MDBCardTitle>
                             <div className='d-inline-flex'>
 
                                 <MDBCol lg="2" md="2" sm='4'>
-                                    <img id="profileImage" src={barber.profilePicture} className='img-fluid' alt='Barber image' />
+                                    <img id="profileImagePC" src={barber.profilePicture} className='img-fluid' alt='Barber image' />
                                 </MDBCol>
 
                                 <MDBCol lg="10" md="10" xs='12'>
@@ -123,7 +122,7 @@ const BarberProfilePage = () => {
                 <MDBRow>
                     <MDBCol>
                         <TextHolder title={"About me"}>
-                            <MDBCardText>{barber.bio}</MDBCardText>
+                            <MDBCardText style={{ fontFamily: 'Share Tech' }}>{barber.bio}</MDBCardText>
                         </TextHolder>
                     </MDBCol>
                 </MDBRow>
