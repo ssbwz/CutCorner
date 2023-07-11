@@ -16,7 +16,7 @@ function BarbersPage() {
    useEffect(() => {
       usersServer.getBarbers(1)
          .then((res) => {
-            setBarbers(res.data)
+            setBarbers(res.data.barbers)
          })
          .catch((error) => {
             if (error.code === 'ERR_NETWORK' || error.code === 'ERR_CONNECTION_REFUSED') {
@@ -41,6 +41,9 @@ function BarbersPage() {
    if (barbers) {
       return <>
          <Container>
+         <Row>
+            {/*TODO: add search by city and name and username*/}
+         </Row>
             <Row>
                {barbers.map((barber) =>
                (
