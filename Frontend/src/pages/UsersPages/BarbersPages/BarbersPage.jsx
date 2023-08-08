@@ -2,7 +2,7 @@ import { MDBCard as Card, MDBCardBody as CardBody, MDBCardText as CardText, MDBC
 import { MDBContainer as Container, MDBRow as Row, MDBCol as Col }
    from 'mdb-react-ui-kit';
 import { useState, useEffect } from 'react';
-import usersServer from '../../../servers/usersServer';
+import usersServer from '../../../services/usersServer';
 import '../../styles/Barber/BarbersPage.css'
 import NavigateButton from '../../../components/navigation/NavigateButton';
 
@@ -12,9 +12,18 @@ import Loading from '../../../components/General/Loading';
 function BarbersPage() {
    const [barbers, setBarbers] = useState()
    const [isFounded, setIsFounded] = useState(true)
+   const [searchedUsername, setSearchedUsername] = useState();
+   const [searchedCity, setSearchedCity] = useState();
+   const [searchedPageNumber, setSearchedPageNumber] = useState(1);
+
 
    useEffect(() => {
-      usersServer.getBarbers(1)
+      const searchRequest = {
+         username: searchedUsername,
+         city: searchedCity,
+         pageNumber: searchedPageNumber
+      }
+      usersServer.getBarbers(searchRequest)
          .then((res) => {
             setBarbers(res.data.barbers)
          })
@@ -41,39 +50,37 @@ function BarbersPage() {
    if (barbers) {
       return <>
          <Container>
-         <Row>
-            {/*TODO: add search by city and name and username*/}
-         </Row>
+            <Row>
+               {/*TODO: add search by city and name and username*/}
+            </Row>
             <Row>
                {barbers.map((barber) =>
                (
-                  <>
                      <Col md="6" key={barber.username}>
                         <Card >
-                        <Row>
-                           <Col lg="4" md="2" sm='4'>
-                              <img src={barber.profilePicture} className='img-fluid shortprofileImage' alt='Barber image' />
-                           </Col>
+                           <Row>
+                              <Col lg="4" md="2" sm='4'>
+                                 <img src={barber.profilePicture} className='img-fluid shortprofileImage' alt='Barber image' />
+                              </Col>
 
-                           <Col lg="8" md="10" xs={12}>
-                              <CardBody>
+                              <Col lg="8" md="10" xs={12}>
+                                 <CardBody>
 
-                                 <CardTitle className='hero-username'>{barber.username}</CardTitle>
-                                 <CardText>Name: {barber.firstname} {barber.midname} {barber.lastname}</CardText>
+                                    <CardTitle className='hero-username'>{barber.username}</CardTitle>
+                                    <CardText>Name: {barber.firstname} {barber.midname} {barber.lastname}</CardText>
 
-                                 <CardTitle className='section-title'>Services</CardTitle>
-                                 <CardText>
-                                    {GenerateServicesText(barber.services)}
-                                 </CardText>
+                                    <CardTitle className='section-title'>Services</CardTitle>
+                                    <CardText>
+                                       {GenerateServicesText(barber.services)}
+                                    </CardText>
 
-                                 <NavigateButton link={`/users/barbers/${barber.username}`} title={'Profile'} />
+                                    <NavigateButton link={`/users/barbers/${barber.username}`} title={'Profile'} />
 
-                              </CardBody>
-                           </Col>
+                                 </CardBody>
+                              </Col>
                            </Row>
                         </Card>
                      </Col>
-                  </>
                )
                )}
             </Row>

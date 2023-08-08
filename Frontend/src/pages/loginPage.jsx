@@ -1,10 +1,7 @@
-import { useEffect } from "react";
-import React  from "react";
+import React from "react";
 
 
 import LoginGoogleButton from "../components/auth/LoginGoogleButton";
-import LogoutGoogleButton from "../components/auth/LogoutGoogleButton";
-import { gapi } from "gapi-script"
 
 // styling
 import {
@@ -16,21 +13,10 @@ import {
     from 'mdb-react-ui-kit';
 
 
-const clientId = "676561310102-n0re7t10lpgc4ngd74t7umi9i6l2kujk.apps.googleusercontent.com"
-
-
-
 function LoginPage() {
 
-    useEffect(() => {
-        gapi.load('auth2', function(){
-            gapi.auth2.init()
-        })
-    }, [])
-
-
     return <>
-        <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
+        <MDBContainer style={{height: '83vh'}}  className="p-3 my-5 d-flex flex-column w-50">
 
             <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' />
             <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' />
@@ -46,9 +32,9 @@ function LoginPage() {
                 <p>Not a member? <a href="#!">Register</a></p>
                 <p>or sign up with:</p>
                 <MDBBtn tag='a' color='none' className='m-1' style={{ color: '#1266f1' }}>
-                   
+
                 </MDBBtn>
-                 <LoginGoogleButton />
+                <LoginGoogleButton />
             </div>
 
         </MDBContainer>

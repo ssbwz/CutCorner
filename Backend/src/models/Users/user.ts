@@ -1,3 +1,5 @@
+import UserType from './UserType'
+
 export default class User {
   id: string;
   firstname: string;
@@ -12,6 +14,7 @@ export default class User {
   profilePicture: string;
   createdAt: Date;
   updatedAt: Date;
+  userType: UserType;
 
   constructor(
     id: string,
@@ -26,7 +29,8 @@ export default class User {
     gender: string,
     profilePicture: string,
     createdAt: Date = new Date(),
-    updatedAt: Date = new Date()
+    updatedAt: Date = new Date(),
+    userType: UserType
   ) {
     this.id = id;
     this.firstname = firstname;
@@ -41,5 +45,6 @@ export default class User {
     this.profilePicture = profilePicture;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.userType = userType
   }
 }

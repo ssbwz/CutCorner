@@ -1,10 +1,10 @@
 import axios from "axios";
 const header = () => {
-    if (JSON.parse(localStorage.getItem("accessToken")) !== null) {
+    if (localStorage.getItem("accessToken") !== null) {
         return {
             headers: {
                 "Content-type": "application/json",
-                "Authorization": "Bearer " + JSON.parse(localStorage.getItem("accessToken")).accessToken
+                "Authorization": "Bearer " + localStorage.getItem("accessToken")
             }
         }
     }

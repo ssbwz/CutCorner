@@ -1,4 +1,4 @@
-export default class GetBarberProfilesResponse {
+export default class GetBarberProfileResponse {
   firstname: string;
   midname: string;
   lastname: string;

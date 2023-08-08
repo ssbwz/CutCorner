@@ -6,7 +6,7 @@ import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardTitle, MDBCa
 import '../../styles/Barber/BarberProfile.css'
 
 // servers
-import usersServer from '../../../servers/usersServer'
+import usersServer from '../../../services/usersServer'
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TextHolder from '../../../components/General/TextHolder';
@@ -25,22 +25,26 @@ const BarberProfilePage = () => {
 
     useEffect(() => {
         if (location.pathname === '/me') {
+           
             usersServer.getCurrentProfile()
                 .then((res) => {
+                   
                     setBarber(res.data)
                 })
                 .catch((error) => {
+                    
                     if (error.code === 'ERR_NETWORK' || error.code === 'ERR_CONNECTION_REFUSED') {
                         navigator("/exception", { state: { exceptionType: "serviceDown" } })
                         return
                     }
+                   
                     if (error && error.response.status === 404) {
                         setIsFounded(false)
                     }
                 })
         } else if (location.pathname.slice(0, 15) === '/users/barbers/') {
             const searchedUsername = location.pathname.slice(15)
-            usersServer.getUserByUsername(searchedUsername)
+            usersServer.getBarberByUsername(searchedUsername)
                 .then((res) => {
                     setBarber(res.data)
                 })
@@ -132,7 +136,7 @@ const BarberProfilePage = () => {
                         <TextHolder title={"Services"}>
                             <MDBCardText>
                                 {barber.services.map((service) => (
-                                    <div className="services-element" >{service.title} {service.price}{service.currencySign}</div>
+                                    <div key={service.title} className="services-element" >{service.title} {service.price}{service.currencySign}</div>
                                 ))}
                             </MDBCardText>
                         </TextHolder>

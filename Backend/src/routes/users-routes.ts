@@ -1,18 +1,20 @@
-import { Router, Request, Response } from 'express';
-import UserRepository from '../database/usersRepoImpl';
+import { Router, Request, Response, NextFunction } from 'express';
+import usersRepoImpl from '../database/usersRepoImpl';
 import UserDatabaseInterface from '../database/interfaces/usersRepoInterface';
 import GetBarbersProfilesResponse from '../models/Users/Barbers/GetBarbersProfilesResponse'
 import UsersControllerImpl from '../controllers/usersControllerImpl'
-import UserControllerInterface from '../controllers/interface/usersControllerInterface'
+import GetBarbersProfilesRequest from '../models/Users/Barbers/GetBarbersProfilesRequest'
+import usersControllerInterface from '../controllers/interfaces/usersControllerInterface';
+import { authUser, authRole, getTokenPayload } from './authorization/auth'
+import UserType from '../models/Users/UserType';
+
 
 const router: Router = Router();
 
+const userRepository: UserDatabaseInterface = new usersRepoImpl();
+const userController: usersControllerInterface = new UsersControllerImpl(userRepository)
 
-const userRepository: UserDatabaseInterface = new UserRepository();
-const userController = new UsersControllerImpl(userRepository)
-
-router.get('/', async (req: Request, res: Response) => {
-
+router.get('/', authRole(UserType.ADMIN), async (req: Request, res: Response) => {
   const users = await userController.getUsers()
 
   if (users) {
@@ -39,11 +41,12 @@ router.get('/username/:username', async (req: Request, res: Response) => {
   res.end("Couldn't find the user");
 });
 
-router.get('/me', async (req: Request, res: Response) => {
-  // todo: get the user id using the token
-  const userid: string = "3e4258d8-e054-4a0d-8c2a-53cb6ba188c4";
-
-  const user = await userController.getUserById(userid)
+router.get('/me', authUser, async (req: Request, res: Response) => {
+  if (!req.headers['authorization']) {
+    res.sendStatus(401)
+    return res.send('Not allowed')
+  }
+  const user = await userController.getUserByUsername(getTokenPayload(req.headers['authorization']).username)
 
   if (user) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -54,13 +57,44 @@ router.get('/me', async (req: Request, res: Response) => {
   res.end("Couldn't find the user");
 });
 
-router.get('/barbers/:pageNumber', async (req: Request, res: Response) => {
-  const pageNumber: string = req.params.pageNumber;
 
-  const barbers = await userController.getBarbers(Number(pageNumber))
+
+// barbers routes 
+router.get('/barbers/me', authUser, authRole(UserType.BARBER), async (req: Request, res: Response) => {
+  if (!req.headers['authorization']) {
+    res.sendStatus(401)
+    return res.send('Not allowed')
+  }
+  const user = await userController.getBarberByUsername(getTokenPayload(req.headers['authorization']).username)
+
+  if (user) {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(user));
+    return;
+  }
+  res.writeHead(404, { 'Content-Type': 'text/plain' });
+  res.end("Couldn't find the barber");
+});
+
+router.get('/barbers/username/:username/city/:city/pagenumber/:pagenumber', async (req: Request, res: Response) => {
+  const barbers = await userController.getBarbers(new GetBarbersProfilesRequest({ username: req.params.username == 'undefined' ? undefined : req.params.username, city: req.params.city == 'undefined' ? undefined : req.params.city, pageNumber: req.params.pagenumber }))
   const barbersResponse = new GetBarbersProfilesResponse(barbers);
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify(barbersResponse));
+});
+
+router.get('/barbers/username/:username', async (req: Request, res: Response) => {
+  const searchedUsername: string = req.params.username;
+
+  const user = await userController.getBarberByUsername(searchedUsername);
+  if (user) {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(user));
+    return;
+  }
+
+  res.writeHead(404, { 'Content-Type': 'text/plain' });
+  res.end("Couldn't find the user");
 });
 
 export default router;

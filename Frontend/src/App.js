@@ -15,6 +15,7 @@ import BarbersPage from './pages/UsersPages/BarbersPages/BarbersPage'
 import ExceptionPage from './pages/ExceptionPage';
 import Footer from './components/navigation/Footer';
 import NotFound from './pages/NotFoundPage';
+import PrivateRoutes from './components/auth/PrivateRoutes';
 
 function App() {
   return (
@@ -23,7 +24,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route path={"/"} element={<HomePage />} />
-          <Route path={"/me"} element={<UserPage />} />
+          <Route element={<PrivateRoutes />}>
+            <Route path={"/me"} element={<UserPage />} />
+          </Route>
           <Route path={"/login"} element={<LoginPage />} />
           <Route path={"/users"} >
             <Route path={"barbers"} element={<BarbersPage />} />
@@ -32,7 +35,7 @@ function App() {
           <Route path={"/exception"} element={<ExceptionPage />} />
           <Route path={"/404"} element={<NotFound />} />
         </Routes>
-       
+
         <Footer />
       </Router>
     </div>

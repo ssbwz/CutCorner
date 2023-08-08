@@ -1,3 +1,4 @@
+import UserType from "../UserType";
 import User from "../user";
 
 export default class Barber extends User {
@@ -32,6 +33,7 @@ export default class Barber extends User {
     profilePicture: string,
     createdAt: Date,
     updatedAt: Date,
+    userType: UserType,
     workAddress: {
       city: string;
       street: string;
@@ -62,7 +64,8 @@ export default class Barber extends User {
       gender,
       profilePicture,
       createdAt,
-      updatedAt
+      updatedAt,
+      userType
     );
     this.workAddress = workAddress;
     this.bio = bio;
