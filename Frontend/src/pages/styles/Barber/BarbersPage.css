@@ -23,3 +23,7 @@
     font-weight: 700;
     line-height: normal;
 }
+
+.pagination{
+    justify-content: center;
+}

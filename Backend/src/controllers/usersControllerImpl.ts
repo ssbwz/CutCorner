@@ -5,6 +5,7 @@ import Barber from "../models/Users/Barbers/barber";
 import GetUserProfileByUsernameResponse from "../models/Users/GetUserProfileByUsernameResponse";
 import User from "../models/Users/user";
 import GetBarbersProfilesRequest from "../models/Users/Barbers/GetBarbersProfilesRequest";
+import GetBarbersProfilesResponse from "../models/Users/Barbers/GetBarbersProfilesResponse";
 
 class UserControllerImpl implements usersControllerInterface {
   private userDatabase: UserDatabaseInterface;
@@ -12,6 +13,7 @@ class UserControllerImpl implements usersControllerInterface {
   constructor(userDatabase: UserDatabaseInterface) {
     this.userDatabase = userDatabase;
   }
+
   async getBarberByUsername(searchedUsername: string): Promise<GetBarberProfileResponse | null> {
     try {
       const user = await this.userDatabase.getBarberByUsername(searchedUsername);
@@ -37,8 +39,12 @@ class UserControllerImpl implements usersControllerInterface {
   async getUsers() {
     return this.userDatabase.getUsers()
   }
-  async getBarbers(request: GetBarbersProfilesRequest): Promise<Barber[]> {
-    return await this.userDatabase.getBarbers(request)
+  async getBarbers(request: GetBarbersProfilesRequest): Promise<GetBarbersProfilesResponse> {
+    const count = await this.userDatabase.getBarbersCount(request);
+    const pagesCount = Math.ceil(count / 6);
+    const barbers = await this.userDatabase.getBarbers(request)
+
+    return new GetBarbersProfilesResponse(barbers, pagesCount);
   }
   async getUserById(id: string): Promise<User | null> {
     try {

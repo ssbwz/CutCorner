@@ -2,8 +2,9 @@ import Barber from "./barber";
 
 export default class GetBarbersProfilesResponse {
   barbers: GetBarberProfileResponse[];
+  pagesCount: number;
 
-  constructor(users: any[]) {
+  constructor(users: any[], pagesCount: number) {
     const barbers: GetBarberProfileResponse[] = [];
     for (let index = 0; index < users.length; index++) {
       if (users[index] instanceof Barber) {
@@ -11,6 +12,7 @@ export default class GetBarbersProfilesResponse {
       }
     }
     this.barbers = barbers;
+    this.pagesCount = pagesCount;
   }
 }
 

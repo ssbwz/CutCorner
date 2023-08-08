@@ -29,6 +29,7 @@ const getBarberByUsername = async (username) => {
     return response
 };
 
+
 const usersServer = {
     getCurrentProfile,
     getUserByUsername,

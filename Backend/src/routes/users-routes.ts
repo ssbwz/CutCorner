@@ -76,9 +76,9 @@ router.get('/barbers/me', authUser, authRole(UserType.BARBER), async (req: Reque
   res.end("Couldn't find the barber");
 });
 
+
 router.get('/barbers/username/:username/city/:city/pagenumber/:pagenumber', async (req: Request, res: Response) => {
-  const barbers = await userController.getBarbers(new GetBarbersProfilesRequest({ username: req.params.username == 'undefined' ? undefined : req.params.username, city: req.params.city == 'undefined' ? undefined : req.params.city, pageNumber: req.params.pagenumber }))
-  const barbersResponse = new GetBarbersProfilesResponse(barbers);
+  const barbersResponse = await userController.getBarbers(new GetBarbersProfilesRequest({ username: req.params.username == 'undefined' ? undefined : req.params.username, city: req.params.city == 'undefined' ? undefined : req.params.city, pageNumber: req.params.pagenumber }))
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify(barbersResponse));
 });

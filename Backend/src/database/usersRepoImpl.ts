@@ -16,6 +16,33 @@ export default class UsersRepoImpl implements usersRepoInterface {
     this.db = this.database.getDatabase();
     this.collection = this.db.collection<User>("Users");
   }
+  async getBarbersCount(request: GetBarbersProfilesRequest): Promise<number> {
+    try {
+      const searchObject: {
+        userType: UserType;
+        "workAddress.city"?: { $regex: string; $options: string };
+        username?: { $regex: string; $options: string };
+      } = {
+        userType: "Barber" as UserType,
+      };
+
+      if (request.city) {
+        searchObject["workAddress.city"] = { $regex: request.city, $options: "i" };
+      }
+
+      if (request.username) {
+        searchObject.username = { $regex: request.username, $options: "i" };
+      }
+      const count = await this.collection
+        .countDocuments(searchObject)
+
+      return count
+    }
+    catch (err) {
+      throw err
+    }
+
+  }
 
   async getUserByEmail(email: string): Promise<User | null> {
     try {
@@ -74,22 +101,26 @@ export default class UsersRepoImpl implements usersRepoInterface {
 
   async getBarbers(request: GetBarbersProfilesRequest): Promise<Barber[]> {
     const collectionBarber: Collection<Barber> = this.db.collection<Barber>("Users");
-    const pageSize = 5;
+    const pageSize = 6;
     const skipCount = (request.pageNumber - 1) * pageSize;
 
-    
-    const searchObject = {
+
+    const searchObject: {
+      userType: UserType;
+      "workAddress.city"?: { $regex: string; $options: string };
+      username?: { $regex: string; $options: string };
+    } = {
       userType: "Barber" as UserType,
-      "workAddress.city": request.city,
-      username: request.username
+    };
+
+    if (request.city) {
+      searchObject["workAddress.city"] = { $regex: request.city, $options: "i" };
     }
-    
-    if(searchObject["workAddress.city"] === undefined){
-      delete searchObject["workAddress.city"]
+
+    if (request.username) {
+      searchObject.username = { $regex: request.username, $options: "i" };
     }
-    if(searchObject.username === undefined){
-      delete searchObject.username
-    }
+
 
     try {
       const users = await collectionBarber

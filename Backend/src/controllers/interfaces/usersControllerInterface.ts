@@ -1,12 +1,12 @@
 import GetUserProfileByUsernameResponse from "../../models/Users/GetUserProfileByUsernameResponse";
-import Barber from "../../models/Users/Barbers/barber";
 import User from "../../models/Users/user";
 import GetBarbersProfilesRequest from "../../models/Users/Barbers/GetBarbersProfilesRequest";
+import GetBarbersProfilesResponse from "../../models/Users/Barbers/GetBarbersProfilesResponse";
 
 
 interface usersControllerInterface {
   getUsers(): Promise<User[]>;
-  getBarbers(request: GetBarbersProfilesRequest): Promise<Barber[]>;
+  getBarbers(request: GetBarbersProfilesRequest): Promise<GetBarbersProfilesResponse>;
   getUserById(id: string): Promise<User | null>;
   getUserByUsername(searchedUsername: string): Promise<GetUserProfileByUsernameResponse | null>;
   getBarberByUsername(searchedUsername: string): Promise<GetUserProfileByUsernameResponse | null>;
