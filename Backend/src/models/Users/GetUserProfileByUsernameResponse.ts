@@ -1,9 +1,9 @@
 export default class GetUserProfileByUsernameResponse {
   firstname: string;
-  midname: string;
+  midname: string | undefined;
   lastname: string;
   username: string;
-  address: string;
+  address: string | undefined;
   gender: string;
   profilePicture: string;
 
@@ -17,10 +17,10 @@ export default class GetUserProfileByUsernameResponse {
     profilePicture
   }: {
     firstname: string;
-    midname: string;
+    midname: string | undefined;
     lastname: string;
     username: string;
-    address: string;
+    address: string | undefined;
     gender: string;
     profilePicture: string;
   }) {

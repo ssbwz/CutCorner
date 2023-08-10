@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response, NextFunction, response } from 'express';
 import usersRepoImpl from '../database/usersRepoImpl';
 import UserDatabaseInterface from '../database/interfaces/usersRepoInterface';
 import GetBarbersProfilesResponse from '../models/Users/Barbers/GetBarbersProfilesResponse'
@@ -7,6 +7,9 @@ import GetBarbersProfilesRequest from '../models/Users/Barbers/GetBarbersProfile
 import usersControllerInterface from '../controllers/interfaces/usersControllerInterface';
 import { authUser, authRole, getTokenPayload } from './authorization/auth'
 import UserType from '../models/Users/UserType';
+import ValidationError from '../models/Exception/ValidationError';
+import RegisterUserRequest from '../models/Users/RegisterUserRequest';
+import RegisterUserResponse from '../models/Users/RegisterUserResponse';
 
 
 const router: Router = Router();
@@ -55,6 +58,41 @@ router.get('/me', authUser, async (req: Request, res: Response) => {
   }
   res.writeHead(404, { 'Content-Type': 'text/plain' });
   res.end("Couldn't find the user");
+});
+
+
+router.post('/validation/username/:username', async (req: Request, res: Response) => {
+  const searchedUsername: string = req.params.username;
+
+  try {
+    const response = await userController.ValidateUsername(searchedUsername);
+    if (response) {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(response));
+      return;
+    }
+  }
+  catch (err) {
+    if (err as typeof ValidationError) {
+      res.status(400).json({ error: err });
+      return
+    }
+  }
+});
+
+
+router.post('/', async (req: Request, res: Response) => {
+  const request: RegisterUserRequest = new RegisterUserRequest(req.body);
+
+  const response: RegisterUserResponse = await userController.registerUser(request)
+  if (response.success) {
+    res.writeHead(201, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(response));
+    return
+  }
+
+  res.writeHead(500, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(response));
 });
 
 

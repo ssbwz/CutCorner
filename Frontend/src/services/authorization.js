@@ -17,6 +17,7 @@ const header = () => {
             "Content-type": "application/json"
         }
 }
+
 const axiosCheckToken = axios.create({
     baseURL: "http://localhost:5000/",
     ...header()
@@ -87,7 +88,15 @@ function GetUserUsernameFromToken() {
 
 const loginWithGoogle = async (googleLoginData) => {
     const res = await axiosCheckToken.post("auth/login/google", googleLoginData)
-    localStorage.setItem('accessToken', res.data.token)
+    const token = res.data.token
+
+    if(token === undefined){
+        localStorage.setItem('userInfo', JSON.stringify(res.data.info))
+        window.location.replace("/register");
+        return
+    }
+
+    localStorage.setItem('accessToken', token)
     window.location.replace("/");
 }
 

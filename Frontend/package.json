@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@eonasdan/tempus-dominus": "^6.7.11",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@popperjs/core": "^2.11.8",
     "@react-oauth/google": "^0.11.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -15,6 +17,7 @@
     "mdb-react-ui-kit": "^6.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
+    "react-datepicker": "^4.16.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",

@@ -76,14 +76,39 @@ export default class AuthControllerImpl implements AuthControllerInterface {
         }
     }
 
-    public async loginWithGoogle(googleLoginRequest: GoogleLoginRequest): Promise<LoginResponse> {       
+    public async loginWithGoogle(googleLoginRequest: GoogleLoginRequest): Promise<LoginResponse> {
         const user = await this.userController.getUserByEmail(googleLoginRequest.email)
+
+        const googleInfo = {
+            first_name: googleLoginRequest.first_name,
+            last_name: googleLoginRequest.last_name,
+            email: googleLoginRequest.email
+        }
+
+        if (!user) {
+            const userInfoEncoded = this.generateToken({
+                first_name: googleLoginRequest.first_name,
+                last_name: googleLoginRequest.last_name,
+                email: googleLoginRequest.email
+            })
+
+            return new LoginResponse({
+                token: undefined,
+                info: userInfoEncoded
+            })
+        }
         const token = this.generateToken({
             username: user?.username,
             role: user?.userType
         })
 
-        return new LoginResponse({ token: token })
+        return new LoginResponse({
+            token: token,
+            info: undefined
+        })
+
+
+
 
     }
 }

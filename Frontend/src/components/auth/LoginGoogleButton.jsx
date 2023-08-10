@@ -18,7 +18,6 @@ function LoginGoogleButton(props) {
         navigate('/myProfile');
     }
 
-
     const login = useGoogleLogin({
         onSuccess: async response => {
             try{

@@ -6,19 +6,66 @@ import GetUserProfileByUsernameResponse from "../models/Users/GetUserProfileByUs
 import User from "../models/Users/user";
 import GetBarbersProfilesRequest from "../models/Users/Barbers/GetBarbersProfilesRequest";
 import GetBarbersProfilesResponse from "../models/Users/Barbers/GetBarbersProfilesResponse";
+import ValidationError from '../models/Exception/ValidationError'
+import UsernameValidationReponse from '../models/Users/UsernameValidationReponse'
+import RegisterUserRequest from "../models/Users/RegisterUserRequest";
+import RegisterUserResponse from "../models/Users/RegisterUserResponse";
+import UserType from "../models/Users/UserType";
+const { v4: uuidv4 } = require('uuid');
 
+UsernameValidationReponse
 class UserControllerImpl implements usersControllerInterface {
   private userDatabase: UserDatabaseInterface;
 
   constructor(userDatabase: UserDatabaseInterface) {
     this.userDatabase = userDatabase;
   }
+ async registerUser(request: RegisterUserRequest): Promise<RegisterUserResponse> {
+
+const newUser = new User(
+  uuidv4(),
+  request.firstName,
+  request.midName,
+  request.lastName,
+  request.username,
+  request.email,
+  request.phoneNumber,
+  undefined, // address
+  request.birthDate.toLocaleString(),
+  request.gender,
+  'profile_picture_url',
+  UserType.CUSTOMER // or UserType.ADMIN or other appropriate value
+);
+    const user : User = await this.userDatabase.createUser(newUser);
+    if (user) {
+      return new RegisterUserResponse(true)
+    }
+
+    return new RegisterUserResponse(false, "Couldn't create user")
+  }
+  
+  async ValidateUsername(username: string): Promise<UsernameValidationReponse> {
+    const user = await this.userDatabase.getUserByUsername(username);
+    if (user) {
+      throw new ValidationError(
+        'username',
+        'This username has been taken.',
+        username
+      )
+    }
+    return new UsernameValidationReponse(
+      {
+        isUsernameValid: true,
+        username: username
+      }
+    )
+  }
 
   async getBarberByUsername(searchedUsername: string): Promise<GetBarberProfileResponse | null> {
     try {
-      const user = await this.userDatabase.getBarberByUsername(searchedUsername);
-      if (user) {
-        const userResponse = new GetBarberProfileResponse(user);
+      const barber = await this.userDatabase.getBarberByUsername(searchedUsername);
+      if (barber) {
+        const userResponse = new GetBarberProfileResponse(barber);
         return userResponse;
       }
       return null

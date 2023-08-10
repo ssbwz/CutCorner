@@ -1,9 +1,9 @@
 export default class GetBarberProfileResponse {
   firstname: string;
-  midname: string;
+  midname: string | undefined;
   lastname: string;
   username: string;
-  address: string;
+  address: string | undefined;
   gender: string;
   profilePicture: string;
   workAddress: {
@@ -37,10 +37,10 @@ export default class GetBarberProfileResponse {
     availabilities,
   }: {
     firstname: string;
-    midname: string;
+    midname: string | undefined;
     lastname: string;
     username: string;
-    address: string;
+    address: string | undefined;
     gender: string;
     profilePicture: string;
     workAddress: {

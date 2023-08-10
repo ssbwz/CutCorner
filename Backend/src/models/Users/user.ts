@@ -3,33 +3,29 @@ import UserType from './UserType'
 export default class User {
   id: string;
   firstname: string;
-  midname: string;
+  midname: string | undefined;
   lastname: string;
   username: string;
   email: string;
-  phoneNumber: string;
-  address: string;
+  phoneNumber: string | undefined;
+  address: string | undefined;
   birthdate: string;
   gender: string;
   profilePicture: string;
-  createdAt: Date;
-  updatedAt: Date;
   userType: UserType;
 
   constructor(
     id: string,
     firstname: string,
-    midname: string,
+    midname: string | undefined,
     lastname: string,
     username: string,
     email: string,
-    phoneNumber: string,
-    address: string,
+    phoneNumber: string | undefined,
+    address: string | undefined,
     birthdate: string,
     gender: string,
     profilePicture: string,
-    createdAt: Date = new Date(),
-    updatedAt: Date = new Date(),
     userType: UserType
   ) {
     this.id = id;
@@ -43,8 +39,6 @@ export default class User {
     this.birthdate = birthdate;
     this.gender = gender;
     this.profilePicture = profilePicture;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
     this.userType = userType
   }
 }

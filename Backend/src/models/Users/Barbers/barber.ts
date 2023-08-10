@@ -22,17 +22,15 @@ export default class Barber extends User {
   constructor(
     id: string,
     firstname: string,
-    midname: string,
+    midname: string | undefined,
     lastname: string,
     username: string,
     email: string,
-    phoneNumber: string,
-    address: string,
+    phoneNumber: string | undefined,
+    address: string | undefined,
     birthdate: string,
     gender: string,
     profilePicture: string,
-    createdAt: Date,
-    updatedAt: Date,
     userType: UserType,
     workAddress: {
       city: string;
@@ -63,8 +61,6 @@ export default class Barber extends User {
       birthdate,
       gender,
       profilePicture,
-      createdAt,
-      updatedAt,
       userType
     );
     this.workAddress = workAddress;

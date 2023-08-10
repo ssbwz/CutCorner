@@ -16,6 +16,7 @@ import ExceptionPage from './pages/ExceptionPage';
 import Footer from './components/navigation/Footer';
 import NotFound from './pages/NotFoundPage';
 import PrivateRoutes from './components/auth/PrivateRoutes';
+import ReigsterPage from './pages/UsersPages/ReigsterPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path={"/me"} element={<UserPage />} />
           </Route>
           <Route path={"/login"} element={<LoginPage />} />
+          <Route path={"/register"} element={<ReigsterPage />} />         
           <Route path={"/users"} >
             <Route path={"barbers"} element={<BarbersPage />} />
             <Route path={"barbers/:username"} element={<ProfilePage />} />

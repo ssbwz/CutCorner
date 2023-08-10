@@ -1,14 +1,15 @@
-import authorisation from "./authorization";
+import authorization from "./authorization";
 import http from "./serverBase";
+import jwt_decode from "jwt-decode";
 
 const getCurrentProfile = async () => {
-    if (authorisation.isAuthorizied()) {
-        authorisation.authorizationValidator()
+    if (authorization.isAuthorizied()) {
+        authorization.authorizationValidator()
 
-        switch (authorisation.GetUserRoleFromToken()) {
-            case authorisation.userTypes.CUSTOMER: return await http.get("/users/me")
-            case authorisation.userTypes.BARBER: return await http.get("/users/barbers/me")
-            case authorisation.userTypes.ADMIN: throw new Error("Not implmented")
+        switch (authorization.GetUserRoleFromToken()) {
+            case authorization.userTypes.CUSTOMER: return await http.get("/users/me")
+            case authorization.userTypes.BARBER: return await http.get("/users/barbers/me")
+            case authorization.userTypes.ADMIN: throw new Error("Not implmented")
         }
     }
 };
@@ -29,12 +30,26 @@ const getBarberByUsername = async (username) => {
     return response
 };
 
+const getUserRegisterInfo = () => {
+    return jwt_decode(localStorage.getItem("userInfo"))
+}
 
+const ValidateUsername = async (username) => {
+    return await http.post("users/validation/username/" + username);
+}
+
+const registerUser = async (registerUserRequest) => {
+    console.log(registerUserRequest)
+    return await http.post("users/", registerUserRequest);
+}
 const usersServer = {
     getCurrentProfile,
     getUserByUsername,
     getBarbers,
-    getBarberByUsername
+    getBarberByUsername,
+    getUserRegisterInfo,
+    ValidateUsername,
+    registerUser
 };
 
 export default usersServer;

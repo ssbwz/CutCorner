@@ -5,6 +5,7 @@ import User from "../models/Users/user";
 import Barber from "../models/Users/Barbers/barber";
 import GetBarbersProfilesRequest from "../models/Users/Barbers/GetBarbersProfilesRequest";
 import UserType from "../models/Users/UserType";
+import RegisterUserRequest from "../models/Users/RegisterUserRequest";
 
 export default class UsersRepoImpl implements usersRepoInterface {
   private collection: Collection<User>;
@@ -15,6 +16,13 @@ export default class UsersRepoImpl implements usersRepoInterface {
     this.database.connect()
     this.db = this.database.getDatabase();
     this.collection = this.db.collection<User>("Users");
+  }
+  async createUser(newUser: User): Promise<User> {
+   const res =  await this.collection.insertOne(newUser)
+   if(res.acknowledged){
+    return newUser
+   }
+   throw new Error("Couldn't insert a new User")
   }
   async getBarbersCount(request: GetBarbersProfilesRequest): Promise<number> {
     try {
@@ -71,7 +79,11 @@ export default class UsersRepoImpl implements usersRepoInterface {
 
   async getUserByUsername(username: string): Promise<User | null> {
     try {
-      const user = await this.collection.findOne({ username });
+      const searchObject = {
+        username: { $regex: username, $options: "i" }
+      };
+  
+      const user = await this.collection.findOne(searchObject); 
       return user;
     } catch (error) {
       console.log("Error retrieving user by username:", error);
@@ -145,8 +157,6 @@ export default class UsersRepoImpl implements usersRepoInterface {
             barber.birthdate,
             barber.gender,
             barber.profilePicture,
-            barber.createdAt,
-            barber.updatedAt,
             barber.userType,
             barber.workAddress,
             barber.bio,

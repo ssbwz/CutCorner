@@ -1,11 +1,15 @@
 export default class LoginResponse {
-    token: string;
+    token: string| undefined;
+    info: any | undefined;
 
     constructor({
-        token
+        token,
+        info,
     }: {
-        token: string;
+        token: string | undefined;
+        info: any | undefined;
     }) {
         this.token = token;
+        this.info = info;
     }
 }

@@ -15,6 +15,11 @@ function ExceptionPage() {
                     <h1>Sorry, the service is down.</h1>
                 </>)
             }
+            if (state.message) {
+                setReturnComponent(<>
+                    <h1>{state.message}</h1>
+                </>)
+            }
         } else
             navigator('/')
     }, [location.state])
